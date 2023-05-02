@@ -32,4 +32,4 @@ The two most interesting next features to me are adding a variable number of row
 Well, its a Create React App, so its the usual deal to spin it up locally:
 - Ensure you have all the pre-reqs installed (aka Node)
 - Clone the repo down to your local
-- cd spreadsheet && npm start
+- cd spreadsheet && npm i && npm start
