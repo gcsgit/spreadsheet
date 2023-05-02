@@ -1,0 +1,42 @@
+.SS-table {
+  border: 1px solid gray;
+  font-size: 16px;
+}
+
+.SS-table td, .SS-table th {
+  box-shadow: -1px -1px lightgrey;
+  width: 60px;
+  min-width: 60px;
+  height: 20px;
+  min-height: 20px;
+  font-size: 1em;
+  padding: 2px;
+  position: relative;
+}
+
+.SS-table th {
+  font-weight: 500;
+}
+
+.SS-table input[type="text"] {
+  border: none;
+  font-size: .9em;
+  width: 50px;
+  height: 20px;
+  text-align: right;
+}
+.SS-table input[type="text"]:focus {
+  width: 170px;
+  height: 30px;
+  text-align: left;
+  padding-left: .5em;
+  position: absolute;
+  top: 0; left: 0;
+  z-index: 2;
+  text-decoration: none;
+  color: inherit;
+}
+.SS-table input[type="text"].invalid {
+  color: red;
+  text-decoration: line-through;
+}
