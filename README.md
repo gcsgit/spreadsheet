@@ -2,7 +2,7 @@
 A (very) simple spreadsheet to be used for coding interviews.
 
 ## Design Decisions
-I started out figuring I would be making a simple React app, and envisioned components like <Row> and <Cell> and such, and thought about what the state and props would look like.
+I started out figuring I would be making a simple React app, and envisioned components like Row and Cell and such, and thought about what the state and props would look like.
 
 And then I just couldn't bring myself to do it for such a simple app.
 
