@@ -9,12 +9,16 @@ export default function Spreadsheet () {
         this.rows = rows;
         this.cols = cols;
         this.formulae = new Map();
+        this.isDirty = false;
         this.inputValidator = /^(-?\d+|=([A-O]1[0-5]|[A-O][1-9]))(\+(-?\d+|[A-O]1[0-5]|[A-O][1-9]))*$/;
 
-        this.focusCell = cellNumber => this.getCell(cellNumber).focus();
+        this.focusCell = cellNumber => { try { this.getCell(cellNumber).focus() } catch {} };
         this.getCell = cellNumber => document.getElementById(cellNumber);
         this.getCellFormula = cellNumber => this.formulae[cellNumber];
         this.getCellNumber = (row, col) => ALPHABET[col] + (row + 1);
+        this.isFormulaCell = cell => cell.value[0] === '=';
+
+        this.onchange = () => this.isDirty = true;
 
         this.onfocus = e => {
             const cell = e.target;
@@ -25,8 +29,12 @@ export default function Spreadsheet () {
 
         this.onblur = e => {
             const cell = e.target;
+            if (!this.isDirty) {
+                if (this.isFormulaCell(cell)) this.runFormula(cell.value, cell.id);
+                return;
+            }
             cell.value = cell.value.trim();
-            if (cell.value[0] === '=') cell.value = cell.value.toUpperCase();
+            if (this.isFormulaCell(cell)) cell.value = cell.value.toUpperCase();
             if (!this.inputValidator.test(cell.value)) cell.classList.add('invalid');
             this.updateSpreadsheet(cell);
         }
@@ -50,19 +58,23 @@ export default function Spreadsheet () {
             }
         }
 
+        this.runFormula = (formula, cellNumber) => {
+            const cells = formula.slice(1).split('+');
+            const values = cells.map(cellNum => this.getCell(cellNum).value);
+            const sum = values.reduce((sum, value) => {
+                const val = Number(value);
+                return Number.isInteger(val) ? sum + val : sum;
+            }, 0);
+            this.getCell(cellNumber).value = sum;
+        }
+
         this.updateSpreadsheet = cell => {
-            cell.value[0] === '=' && !cell.classList.contains('invalid')
+            this.isFormulaCell(cell) && !cell.classList.contains('invalid')
                 ? this.formulae.set(cell.id, cell.value)
                 : this.formulae.delete(cell.id);
-            this.formulae.forEach((formula, cellNumber) => {
-                const cells = formula.slice(1).split('+');
-                const values = cells.map(cellNum => this.getCell(cellNum).value);
-                const sum = values.reduce((sum, value) => {
-                    const val = Number(value);
-                    return Number.isInteger(val) ? sum + val : sum;
-                }, 0);
-                this.getCell(cellNumber).value = sum;
-            });
+            this.formulae.forEach(this.runFormula);
+            this.formulae.forEach(this.runFormula);
+            this.isDirty = false;
         }
     }
 
@@ -87,6 +99,7 @@ export default function Spreadsheet () {
                             <input
                                 type="text"
                                 id={spreadsheet.getCellNumber(i,j)}
+                                onChange={spreadsheet.onchange}
                                 onBlur={spreadsheet.onblur}
                                 onKeyDown={spreadsheet.onkeydown}
                                 onFocus={spreadsheet.onfocus}
