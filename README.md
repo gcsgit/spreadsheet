@@ -2,7 +2,7 @@
 A (very) simple spreadsheet to be used for coding interviews.
 
 ## Design Decisions
-I started out figuring I would be making a simple React app, and envisioned components like <Row> and <Cell> and such, and thought about what the state and props would look like.
+I started out figuring I would be making a simple React app, and envisioned components like Row and Cell and such, and thought about what the state and props would look like.
 
 And then I just couldn't bring myself to do it for such a simple app.
 
@@ -12,7 +12,7 @@ The only real state to be concerned with is which cells have formulas, and again
 
 So whereas I spun this up quickly as a React app via CRA, and while React of course still gives us nice things like JSX, this spreadsheet once rendered doesn't actually make much use of React. If I had compononetized this further, I could have made use of refs and hooks and such, but its simpler and faster without triggering all the React internals.
 
-In the interest of time I left all the crap that came along with CRA in the repo (forgive me pls), but **everything is in Spreadsheet.js**, which is only ~100 lines of code. I put the minimal CSS in App.css.
+In the interest of time I left all the crap that came along with CRA in the repo (forgive me pls), but **everything is in [Spreadsheet.js](https://github.com/gcsgit/spreadsheet/blob/master/src/Spreadsheet.js)**, which is only ~100 lines of code. I put the minimal CSS in App.css.
 
 I stuck pretty closely to the requirements, but I added some cheap keyboard nav, and some validation + styling, both mostly just for my own sanity. I also made the choice that if a cell is referenced in a formula but its value is invalid, then it is just ignored (ie: When the value of cell A2 is invalid, a formula like =A1+A2 calculates as just =A1).
 
@@ -32,4 +32,4 @@ The two most interesting next features to me are adding a variable number of row
 Well, its a Create React App, so its the usual deal to spin it up locally:
 - Ensure you have all the pre-reqs installed (aka Node)
 - Clone the repo down to your local
-- cd spreadsheet && npm start
+- cd spreadsheet && npm i && npm start
