@@ -29,7 +29,7 @@ export default function Spreadsheet () {
 
         this.onblur = e => {
             const cell = e.target;
-            if (!this.isDirty) {
+            if (!this.isDirty && this.inputValidator.test(cell.value)) {
                 if (this.isFormulaCell(cell)) this.runFormula(cell.value, cell.id);
                 return;
             }
